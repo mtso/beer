@@ -61,11 +61,36 @@ beerRoute.get(function(req, res) {
 });
 
 beerRoute.put(function(req, res) {
+  var beer;
+  Beer.findById(req.params.beer_id, handleResult);
 
+  function saveResult(err) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(beer);
+    }
+  }
+
+  function handleResult(err, foundBeer) {
+    if (err) {
+      res.send(err);
+    } else {
+      beer = foundBeer;
+      beer.quantity = req.body.quantity;
+      beer.save(saveResult);
+    }
+  }
 });
 
 beerRoute.delete(function(req, res) {
-
+  Beer.findByIdAndRemove(req.params.beer_id, function(err) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json({ message: 'Beer removed from the locker!' });
+    }
+  });
 });
 
 app.use('/api', router);
