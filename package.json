@@ -1,0 +1,23 @@
+{
+  "name": "beerlocker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha --reporter flush-reporter",
+    "start": "node server.js"
+  },
+  "author": "mtso <mtso@tuta.io>",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "flush-reporter": "^1.1.0",
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.1.2",
+    "mongoose": "^4.9.0"
+  }
+}
