@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+// TODO: Auto-generate client ID and secret.
+// TODO: Hash the secret.
+// TODO: Hash the ID?
+
 const ClientSchema = new mongoose.Schema({
   name: {
     type: String,
