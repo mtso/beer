@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --reporter flush-reporter",
     "start": "node server.js",
-    "torus": "torus run node server.js"
+    "torus": "torus run nodemon server.js"
   },
   "author": "mtso <mtso@tuta.io>",
   "license": "ISC",
