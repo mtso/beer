@@ -41,7 +41,7 @@ passport.use(
         if (err) {
           return callback(err);
 
-        } else if (!client || client.secret !== passowrd) {
+        } else if (!client || client.secret !== password) {
           return callback(null, false);
 
         } else {
@@ -64,7 +64,7 @@ passport.use(new BearerStrategy(
         }
 
         User.findOne({_id: token.userId},
-          function(err, result) {
+          function(err, user) {
             if (err) {
               return callback(err);
 
@@ -82,6 +82,6 @@ passport.use(new BearerStrategy(
 );
 
 // Set session to true to store session variables between API calls.
-exports.isAuthenticated = passport.authenticate('basic', {session: false});
+exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], {session: false});
 exports.isClientAuthenticated = passport.authenticate('client-basic', {session: false});
 exports.isBearerAuthenticated = passport.authenticate('bearer', {session: false});

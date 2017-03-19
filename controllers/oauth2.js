@@ -64,7 +64,7 @@ exports.token = [
 function handleGrant(client, redirectUri, user, ares, callback) {
   const code = new Code({
     value: uid(16),
-    clientId: client_id,
+    clientId: client._id,
     redirectUri: redirectUri,
     userId: user._id
   });
@@ -90,7 +90,7 @@ function handleExchange(client, code, redirectUri, callback) {
         return callback(null, false);
 
       } else if (redirectUri !== authCode.redirectUri) {
-        return callback(null false);
+        return callback(null, false);
       }
 
       authCode.remove(function(err) {
