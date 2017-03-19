@@ -1,6 +1,7 @@
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 
 const User = require('../models/user');
 const Client = require('../models/client');
@@ -81,7 +82,29 @@ passport.use(new BearerStrategy(
   })
 );
 
+passport.use(new LocalStrategy(
+  function(username, password, callback) {
+    User.findOne({username: username}, function(err, user) {
+      if (err) {
+        return callback(err);
+      } else if (!user) {
+        return callback(null, false);
+      }
+
+      user.verifyPassword(password, function(err, isMatch) {
+        if (err) {
+          return callback(err);
+        } else if (!isMatch) {
+          return callback(null, false);
+        } else {
+          return callback(null, user);
+        }
+      });
+    });
+  }
+));
+
 // Set session to true to store session variables between API calls.
-exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], {session: false});
+exports.isAuthenticated = passport.authenticate(['local', 'bearer'], {session: false});
 exports.isClientAuthenticated = passport.authenticate('client-basic', {session: false});
 exports.isBearerAuthenticated = passport.authenticate('bearer', {session: false});
