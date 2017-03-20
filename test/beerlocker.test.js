@@ -2,10 +2,11 @@
 
 const request = require('supertest');
 const expect = require('chai').expect;
-const app = require('../server');
 const path = require('path');
 const mongodb = require('mongodb');
 const async = require('async');
+
+const app = require('../server');
 
 before(function(done) {
   if (!process.env.MONGODB_URI.includes('test')) {
