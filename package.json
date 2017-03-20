@@ -11,10 +11,13 @@
   "author": "mtso <mtso@tuta.io>",
   "license": "ISC",
   "devDependencies": {
+    "async": "^2.1.5",
     "chai": "^3.5.0",
     "flush-reporter": "^1.1.0",
     "mocha": "^3.2.0",
-    "nodemon": "^1.11.0"
+    "mongodb": "^2.2.25",
+    "nodemon": "^1.11.0",
+    "supertest": "^3.0.0"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
