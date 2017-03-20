@@ -28,22 +28,34 @@ describe('/api', function() {
 
   describe('GET before auth', function() {
     it('should be unauthorized', function(done) {
-
       const routes = [
-        'users',
-        'clients',
-        'beers',
-        'oauth2/authorize'
+        // This should really be false but returns true for undefined user and pass.
+        // {method: 'post', path: 'users'},
+
+        // This returns a 401
+        // {method: 'post', path: 'oauth2/token'},
+
+        {method: 'get', path: 'users'},
+        {method: 'get', path: 'beers'},
+        {method: 'post', path: 'beers'},
+        {method: 'get', path: 'beers/fakeid'},
+        {method: 'put', path: 'beers/fakeid'},
+        {method: 'delete', path: 'beers/fakeid'},
+
+        {method: 'get', path: 'clients'},
+        {method: 'post', path: 'clients'},
+        {method: 'get', path: 'oauth2/authorize'},
+        {method: 'post', path: 'oauth2/authorize'},
       ];
-      function unauthorizedGet(endpoint, callback) {
+      function unauthorizedGet(route, callback) {
         request(app)
-          .get(path.join('/api', endpoint))
+          [route.method](path.join('/api', route.path))
           .end(function(err, res) {
             if (err) {
               return callback(err);
             } else {
-              expect(res.ok).to.be.false;
-              expect(res.status).to.eq(400, 'failed with ' + endpoint);
+              expect(res.ok).to.eq(false, 'failed with ' + JSON.stringify(route));
+              expect(res.status).to.eq(400, 'failed with ' + JSON.stringify(route));
               callback();
             }
           });
@@ -55,53 +67,8 @@ describe('/api', function() {
           done();
         }
       });
-
     });
   });
-
-  // describe('GET before auth', function() {
-  //   describe('should be unauthorized', function() {
-  //     it('/users', function(done) {
-  //       request(app)
-  //         .get('/api/users')
-  //         .end(function(err, res) {
-  //           if (err) {
-  //             return done(err);
-  //           }
-  //           expect(res.ok).to.be.false;
-  //           expect(res.status).to.eq(403);
-  //           done();
-  //         });
-  //     });
-
-  //     it('/clients', function(done) {
-  //       request(app)
-  //         .get('/api/clients')
-  //         .end(function(err, res) {
-  //           if (err) {
-  //             return done(err);
-  //           }
-  //           expect(res.ok).to.be.false;
-  //           expect(res.status).to.eq(403);
-  //           done();
-  //         });
-  //     });
-
-  //     it('/oauth2/authorize', function(done) {
-  //       request(app)
-  //         .get('/api/oauth2/authorize')
-  //         .end(function(err, res) {
-  //           if (err) {
-  //             return done(err);
-  //           }
-  //           expect(res.ok).to.be.false;
-  //           expect(res.status).to.eq(403);
-  //           done();
-  //         });
-  //     });
-  //   });
-  // });
-    
 
   describe('POST /users', function() {
     it('should create a new user', function(done) {
@@ -120,7 +87,7 @@ describe('/api', function() {
     });
   });
 
-  describe('GET /users', function(done) {
+  describe('GET /users', function() {
     it('should return an array of existing users', function(done) {
       request(app)
         .get('/api/users')
@@ -135,6 +102,30 @@ describe('/api', function() {
           const firstUser = body[0];
           expect(firstUser.username).to.eq(user);
           expect(firstUser.password).to.exist;
+          done();
+        });
+    });
+  });
+
+  describe('POST /beers', function() {
+    it('should create a new beer', function(done) {
+      request(app)
+        .post('/api/beers')
+        .send(authString)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .send('name=Anchor Steam')
+        .send('type=Stout')
+        .send('quantity=12')
+        .end(function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          expect(res.ok).to.be.true;
+          const body = res.body;
+          expect(body.message).to.eq('Beer added to the locker!');
+          expect(body.data.name).to.eq('Anchor Steam');
+          expect(body.data.type).to.eq('Stout');
+          expect(body.data.quantity).to.eq(12);
           done();
         });
     });
