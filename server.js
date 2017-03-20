@@ -83,3 +83,5 @@ app.use('/api', router);
 const port = process.env.PORT || 7500;
 app.listen(port);
 console.log('Insert beer on port ' + port);
+
+exports = module.exports = app;
