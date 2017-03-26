@@ -292,7 +292,7 @@ describe('/api', function() {
     })
   })
 
-  describe('requests with a token', function() {
+  describe('token-based requests', function() {
     it('should be authorized', function(done) {
       const routes = [
         {method: 'get', path: 'users'},
