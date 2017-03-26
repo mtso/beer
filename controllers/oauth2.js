@@ -115,14 +115,10 @@ function handleExchange(client, code, redirectUri, callback) {
 }
 
 function uid(len) {
-  var buffer = [];
-  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charlen = chars.length;
-
-  for (var i = 0; i < len; i++) {
-    buffer.push(chars[getRandomInt(0, charlen - 1)])
-  }
-  return buffer.join('');
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  return Array.from({length: len}, (_, index) => {
+    return chars[getRandomInt(0, chars.length - 1)];
+  }).join('');
 }
 
 function getRandomInt(min, max) {
