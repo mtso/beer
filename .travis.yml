@@ -4,7 +4,7 @@ node_js:
   - '6'
 
 env:
-  - MONGODB_URI=mongodb://mongo:27017/test
+  - MONGODB_URI=mongodb://localhost:27017/test
 
 services:
   - mongodb
